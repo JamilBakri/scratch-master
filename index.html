@@ -13,7 +13,7 @@ body {
   color: white;
 }
 
-/* NAVBAR */
+/* NAV */
 nav {
   background: #020617;
   padding: 15px;
@@ -29,10 +29,7 @@ nav a {
   cursor: pointer;
   text-decoration: none;
 }
-
-nav a:hover {
-  color: #38bdf8;
-}
+nav a:hover { color: #38bdf8; }
 
 /* SECTIONS */
 section {
@@ -43,10 +40,10 @@ section {
 
 /* HERO */
 .hero {
-  background: linear-gradient(45deg, #0ea5e9, #9333ea);
+  background: linear-gradient(45deg,#0ea5e9,#9333ea);
 }
 
-/* CARDS */
+/* CARD */
 .card {
   background: #1e293b;
   padding: 20px;
@@ -63,10 +60,7 @@ button {
   border-radius: 8px;
   cursor: pointer;
 }
-
-button:hover {
-  background: #0ea5e9;
-}
+button:hover { background:#0ea5e9; }
 
 /* INPUT */
 input, textarea {
@@ -88,16 +82,18 @@ iframe {
 .certificate {
   background: white;
   color: black;
-  padding: 20px;
+  padding: 30px;
   border-radius: 12px;
-  width: 320px;
+  width: 400px;
   margin: auto;
+  border: 10px solid gold;
+  box-shadow: 0 0 20px rgba(255,215,0,0.7);
 }
 
 /* FOOTER */
 footer {
-  background: #020617;
-  padding: 20px;
+  background:#020617;
+  padding:20px;
 }
 </style>
 </head>
@@ -123,24 +119,56 @@ footer {
   <button onclick="go('tutorials')">Start Learning</button>
 </section>
 
-<!-- TUTORIALS -->
+<!-- TUTORIAL SYSTEM -->
 <section id="tutorials">
-  <h2>📚 Tutorials</h2>
+  <h2>📚 Scratch Learning System</h2>
 
-  <div class="card">
-    <h3>Scratch Beginner Tutorial</h3>
-    <iframe src="https://www.youtube.com/embed/jXx3gqV1gT0" allowfullscreen></iframe>
+  <input id="search" placeholder="Search tutorials..." onkeyup="searchVideos()">
+
+  <div>
+    <button onclick="filterCategory('all')">All</button>
+    <button onclick="filterCategory('beginner')">Beginner</button>
+    <button onclick="filterCategory('advanced')">Advanced</button>
   </div>
 
   <div class="card">
-    <h3>More tutorials coming soon...</h3>
+    <h3 id="videoTitle">Now Playing</h3>
+    <iframe id="player" src="https://www.youtube.com/embed/1X7r2X8Z8pA"></iframe>
   </div>
+
+  <div id="videoList">
+
+    <div class="card video beginner" data-title="Scratch Basics">
+      <h3>Scratch Basics</h3>
+      <button onclick="playVideo('1X7r2X8Z8pA','Scratch Basics')">Play</button>
+    </div>
+
+    <div class="card video beginner" data-title="Make Game">
+      <h3>Make Game</h3>
+      <button onclick="playVideo('Fym0r8z5h1c','Make Game')">Play</button>
+    </div>
+
+    <div class="card video advanced" data-title="Animation">
+      <h3>Animation</h3>
+      <button onclick="playVideo('fJ0w0Zx8v1Y','Animation')">Play</button>
+    </div>
+
+  </div>
+
+  <!-- QUIZ -->
+  <div class="card">
+    <h3>🎮 Quiz</h3>
+    <p>What block moves a sprite?</p>
+    <button onclick="checkAnswer('wrong')">Repeat</button>
+    <button onclick="checkAnswer('correct')">Motion</button>
+    <p id="quizResult"></p>
+  </div>
+
 </section>
 
 <!-- PROJECTS -->
 <section id="projects">
   <h2>🎮 Your Projects</h2>
-
   <div class="card">
     <input type="file">
     <button onclick="alert('Project uploaded!')">Add Project</button>
@@ -152,15 +180,26 @@ footer {
   <h2>📜 Certificate</h2>
 
   <div class="certificate">
-    <h3>Scratch Master Certificate</h3>
-    <p><b>Name:</b> Jamil Bakri</p>
-    <p><b>Age:</b> 10</p>
-    <p><b>Role:</b> Instructor</p>
-    <p><b>Phone:</b> 357+94020504</p>
+    <h1 style="font-family:Georgia;">🏆 Certificate of Achievement</h1>
+
+    <p>This certificate is proudly presented to</p>
+
+    <h2 id="certName" contenteditable="true" style="border-bottom:2px solid black; display:inline-block;">
+      Your Name
+    </h2>
+
+    <p>for successfully completing the Scratch Learning Program</p>
+
+    <p>Awarded by</p>
+    <h3>Scratch Master Academy</h3>
+
+    <p>Date: <span id="date"></span></p>
+
+    <p><b>Instructor:</b> Jamil Bakri</p>
   </div>
 
   <br>
-  <button onclick="window.print()">Download Certificate</button>
+  <button onclick="window.print()">🖨 Download Certificate</button>
 </section>
 
 <!-- CONTACT -->
@@ -168,31 +207,20 @@ footer {
   <h2>📞 Contact</h2>
 
   <div class="card">
-
-    <!-- CLICKABLE EMAIL -->
     <p><b>Email:</b> 
       <a href="mailto:scratchinstrutor.1@gmail.com" style="color:#38bdf8;">
         scratchinstrutor.1@gmail.com
       </a>
     </p>
 
-    <p><b>Phone:</b> 357+94020504</p>
+    <input id="name" placeholder="Your Name">
+    <input id="email" placeholder="Your Email">
+    <textarea id="message" placeholder="Your Message"></textarea>
 
-    <!-- REAL CONTACT FORM -->
-    <form action="https://formsubmit.co/scratchinstrutor.1@gmail.com" method="POST">
-
-      <input type="text" name="name" placeholder="Your Name" required>
-      <input type="email" name="email" placeholder="Your Email" required>
-      <textarea name="message" placeholder="Your Message" required></textarea>
-
-      <button type="submit">Send Message</button>
-
-    </form>
-
+    <button onclick="sendEmail()">Send Message</button>
   </div>
 </section>
 
-<!-- FOOTER -->
 <footer>
   <p>© 2026 Scratch Master Academy</p>
 </footer>
@@ -200,6 +228,76 @@ footer {
 <script>
 function go(id){
   document.getElementById(id).scrollIntoView({behavior:'smooth'});
+}
+
+/* DATE */
+document.getElementById("date").innerText = new Date().toLocaleDateString();
+
+/* VIDEO SYSTEM */
+let videos=[
+{id:"1X7r2X8Z8pA",title:"Scratch Basics"},
+{id:"Fym0r8z5h1c",title:"Make Game"},
+{id:"fJ0w0Zx8v1Y",title:"Animation"}
+];
+
+let currentIndex=0;
+
+function playVideo(id,title){
+  document.getElementById("player").src="https://www.youtube.com/embed/"+id;
+  document.getElementById("videoTitle").innerText=title;
+}
+
+setInterval(()=>{
+  currentIndex++;
+  if(currentIndex>=videos.length) currentIndex=0;
+  playVideo(videos[currentIndex].id,videos[currentIndex].title);
+},30000);
+
+/* SEARCH */
+function searchVideos(){
+  let input=document.getElementById("search").value.toLowerCase();
+  let cards=document.querySelectorAll(".video");
+
+  cards.forEach(card=>{
+    let title=card.getAttribute("data-title").toLowerCase();
+    card.style.display=title.includes(input)?"block":"none";
+  });
+}
+
+/* FILTER */
+function filterCategory(cat){
+  let cards=document.querySelectorAll(".video");
+  cards.forEach(card=>{
+    if(cat==="all"||card.classList.contains(cat)){
+      card.style.display="block";
+    }else{
+      card.style.display="none";
+    }
+  });
+}
+
+/* QUIZ */
+function checkAnswer(ans){
+  let r=document.getElementById("quizResult");
+  if(ans==="correct"){
+    r.innerText="✅ Correct!";
+    r.style.color="lime";
+  } else {
+    r.innerText="❌ Try again!";
+    r.style.color="red";
+  }
+}
+
+/* EMAIL */
+function sendEmail(){
+  let n=document.getElementById("name").value;
+  let e=document.getElementById("email").value;
+  let m=document.getElementById("message").value;
+
+  let subject="Message from "+n;
+  let body="Name:"+n+"%0D%0AEmail:"+e+"%0D%0A%0D%0A"+m;
+
+  window.location.href="mailto:scratchinstrutor.1@gmail.com?subject="+subject+"&body="+body;
 }
 </script>
 
